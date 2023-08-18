@@ -43,7 +43,12 @@ export default class ControllerAgent {
         return this.recommendationTool.result;
     }
 
-    async processPRFromUrl(prURL: string) {
+    async processPRFromUrl(prURL: string): Promise<{
+        summary: string;
+        testCases: string;
+        changelog: string;
+        recommendation: string;
+      }> {
         await this.diffsRepo.init(prURL);
 
         const results = await Promise.all([
