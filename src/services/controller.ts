@@ -43,8 +43,32 @@ export default class ControllerAgent {
         return this.recommendationTool.result;
     }
 
-    async processPR(prURL: string) {
+    async processPRFromUrl(prURL: string): Promise<{
+        summary: string;
+        testCases: string;
+        changelog: string;
+        recommendation: string;
+      }> {
         await this.diffsRepo.init(prURL);
+
+        const results = await Promise.all([
+            this.summaryTool.call(),
+            this.testCasesTool.call(),
+            this.changelogTool.call(),
+            // this.incidentTool.call('Library response time crossed 500ms threshold'),
+            this.recommendationTool.call(),
+        ]);
+
+        return {
+            summary: results[0],
+            testCases: results[1],
+            changelog: results[2],
+            recommendation: results[3],
+        };
+    }
+
+    async processPRFromDiff(diff: string) {
+        this.diffsRepo.setDiffs(diff);
 
         const results = await Promise.all([
             this.summaryTool.call(),

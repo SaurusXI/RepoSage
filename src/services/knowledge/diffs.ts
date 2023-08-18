@@ -12,11 +12,17 @@ export default class DiffsKnowledgeRepository extends BaseKnowledgeRepository {
             headers: { Accept: 'application/vnd.github.v3.diff' },
         })).data;
 
+        console.log(this.rawDiff);
+
         // const parsedDiff = parseGitDiff(this.rawDiff);
         // this.fileChanges = parsedDiff.files;
     }
 
     getDiffs() {
         return this.rawDiff;
+    }
+
+    setDiffs(rawDiff : string) {
+        this.rawDiff = rawDiff;
     }
 }
