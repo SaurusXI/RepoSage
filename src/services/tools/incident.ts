@@ -31,7 +31,7 @@ export default class IncidentTool extends BaseTool {
         this.model = new OpenAI({
             temperature: 0.2,
             openAIApiKey: process.env.OPENAI_API_KEY,
-            modelName: 'gpt-3.5-turbo',
+            modelName: 'text-davinci-003',
         });
 
         const prompt = new PromptTemplate({

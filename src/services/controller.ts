@@ -51,6 +51,8 @@ export default class ControllerAgent {
       }> {
         await this.diffsRepo.init(prURL);
 
+        console.log("Processing PR from URL: ", prURL)
+
         const results = await Promise.all([
             this.summaryTool.call(),
             this.testCasesTool.call(),

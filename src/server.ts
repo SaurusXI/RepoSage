@@ -58,6 +58,8 @@ export class Server {
 
             const results = await this.controller.processPRFromUrl(prUrl);
 
+            console.log("Processed PR from URL: ", prUrl, " with results: ", results);
+
             // Posting suggestions to PR as comments
             await this.postCommentToPR(prUrl, results);
 

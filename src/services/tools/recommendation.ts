@@ -28,7 +28,7 @@ export default class RecommendationTool extends BaseTool {
         this.model = new OpenAI({
             temperature: 0.3,
             openAIApiKey: process.env.OPENAI_API_KEY,
-            modelName: 'gpt-3.5-turbo',
+            modelName: 'text-davinci-003',
         });
 
         const prompt = new PromptTemplate({
