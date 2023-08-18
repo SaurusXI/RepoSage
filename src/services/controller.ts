@@ -27,15 +27,38 @@ export default class ControllerAgent {
         this.recommendationTool = new RecommendationTool(this.diffsRepo);
     }
 
+    getSummary() {
+        return this.summaryTool.result;
+    }
+
+    getTCs() {
+        return this.testCasesTool.testCases;
+    }
+
+    getChangelog() {
+        return this.changelogTool.result;
+    }
+
+    getRecommendation() {
+        return this.recommendationTool.result;
+    }
+
     async processPR(prURL: string) {
         await this.diffsRepo.init(prURL);
 
-        await Promise.all([
-            this.summaryTool.call().then(console.log),
-            this.testCasesTool.call().then(console.log),
-            this.changelogTool.call().then(console.log),
-            this.incidentTool.call('Library response time crossed 500ms threshold').then(console.log),
-            this.recommendationTool.call().then(console.log),
+        const results = await Promise.all([
+            this.summaryTool.call(),
+            this.testCasesTool.call(),
+            this.changelogTool.call(),
+            // this.incidentTool.call('Library response time crossed 500ms threshold'),
+            this.recommendationTool.call(),
         ]);
+
+        return {
+            summary: results[0],
+            testCases: results[1],
+            changelog: results[2],
+            recommendation: results[3],
+        };
     }
 }
