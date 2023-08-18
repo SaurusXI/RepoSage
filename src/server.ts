@@ -14,6 +14,8 @@ export class Server {
         this.config();
         this.routes();
 
+        this.controller = new ControllerAgent();
+
         this.octokit = new Octokit({
             auth: process.env.GITHUB_PAT, // Ensure you have a GitHub token
         });
