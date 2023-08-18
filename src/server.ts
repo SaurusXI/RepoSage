@@ -33,8 +33,10 @@ export class Server {
     }): Promise<void> {
         // Make comments for each of the results
         const { summary, testCases, changelog, recommendation } = results;
-        const comment = `## Summary\n${summary}\n\n## Test Cases\n${testCases}\n\n \
-                    ## Changelog\n${changelog}\n\n## Recommendation\n${recommendation}`;
+        const comment = `## Summary\n${summary}\n\n## Test Cases Recommendations\n${testCases}\n\n \
+                    \n## Changelog\n${changelog}\n\n## Recommendation\n${recommendation}`;
+
+        console.log("Posting comment to PR: ", prUrl, " with comment: ", comment);
 
         const issue_number = parseInt(prUrl.split('/').pop() || '', 10);
 
