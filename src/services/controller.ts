@@ -1,6 +1,7 @@
 import DiffsKnowledgeRepository from './knowledge/diffs.js';
 import ChangelogTool from './tools/changelog.js';
 import IncidentTool from './tools/incident.js';
+import RecommendationTool from './tools/recommendation.js';
 import SummaryTool from './tools/summary.js';
 import TestCasesTool from './tools/tc.js';
 
@@ -15,12 +16,15 @@ export default class ControllerAgent {
 
     private incidentTool: IncidentTool;
 
+    private recommendationTool: RecommendationTool;
+
     constructor() {
         this.diffsRepo = new DiffsKnowledgeRepository();
         this.testCasesTool = new TestCasesTool(this.diffsRepo);
         this.summaryTool = new SummaryTool(this.diffsRepo);
         this.changelogTool = new ChangelogTool(this.diffsRepo);
         this.incidentTool = new IncidentTool(this.diffsRepo);
+        this.recommendationTool = new RecommendationTool(this.diffsRepo);
     }
 
     async processPR(prURL: string) {
@@ -31,6 +35,7 @@ export default class ControllerAgent {
             this.testCasesTool.call().then(console.log),
             this.changelogTool.call().then(console.log),
             this.incidentTool.call('Library response time crossed 500ms threshold').then(console.log),
+            this.recommendationTool.call().then(console.log),
         ]);
     }
 }
