@@ -19,4 +19,8 @@ export default class DiffsKnowledgeRepository extends BaseKnowledgeRepository {
     getDiffs() {
         return this.rawDiff;
     }
+
+    setDiffs(rawDiff : string) {
+        this.rawDiff = rawDiff;
+    }
 }
