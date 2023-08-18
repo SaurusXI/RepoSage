@@ -25,13 +25,36 @@ export class Server {
         this.app.use(bodyParser.json());
     }
 
+    private async removeExistingComments(prUrl: string) {
+        const owner = prUrl.split('/')[4];
+        const repo = prUrl.split('/')[5];
+        const issue_number = parseInt(prUrl.split('/').pop() || '', 10);
+
+        const comments = await this.octokit.issues.listComments({
+            owner: owner,
+            repo: repo,
+            issue_number: issue_number,
+        });
+
+        const botComments = comments.data.filter(comment => comment.user.login === 'RepoSage');
+        
+        for (const botComment of botComments) {
+            await this.octokit.issues.deleteComment({
+                owner: owner,
+                repo: repo,
+                comment_id: botComment.id,
+            });
+        }
+    }
+
     private async postCommentToPR(prUrl: string, results: {
         summary: string;
         testCases: string;
         changelog: string;
         recommendation: string;
     }): Promise<void> {
-        // Make comments for each of the results
+        await this.removeExistingComments(prUrl);
+
         const { summary, testCases, changelog, recommendation } = results;
         const comment = `## Summary\n${summary}\n\n## Test Cases Recommendations\n${testCases}\n\n \
                     \n## Changelog\n${changelog}\n\n## Recommendation\n${recommendation}`;
