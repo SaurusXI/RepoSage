@@ -1,15 +1,7 @@
-import axios from 'axios';
-import parseGitDiff from 'parse-git-diff';
+import dotenv from 'dotenv';
+import ControllerAgent from './services/controller.js';
 
-const getDiffs = async (prUrl: string) => {
-    const res = (await axios.get(prUrl, {
-        headers: { Accept: 'application/vnd.github.v3.diff' },
-    }))['data'];
+dotenv.config();
 
-    const parsedDiff = parseGitDiff(res);
-    parsedDiff.files.forEach((fileChange) => {
-        console.log(JSON.stringify(fileChange.chunks));
-    })
-};
-
-getDiffs('https://api.github.com/repos/SaurusXI/sugar-cache/pulls/13');
+const controller = new ControllerAgent();
+controller.processPR('https://api.github.com/repos/SaurusXI/sugar-cache/pulls/13');
