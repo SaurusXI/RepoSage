@@ -1,16 +1,19 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import { controller } from './main.js';
 
 const app = express();
 
+app.use(bodyParser.json());
+
 app.post('/process', async (req, res) => {
-    const { url } = req.body;
+    const { url } = req.body || {};
     if (!url) {
         return res.status(400).json({
             message: 'Request body needs to be like { url: "..." }',
         });
     }
-    const out = controller.processPR(url);
+    const out = await controller.processPR(url);
     return res.status(200).json(out);
 });
 
