@@ -14,6 +14,8 @@ export class Server {
         this.config();
         this.routes();
 
+        this.controller = new ControllerAgent();
+
         this.octokit = new Octokit({
             auth: process.env.GITHUB_PAT, // Ensure you have a GitHub token
         });
@@ -57,6 +59,8 @@ export class Server {
             }
 
             const results = await this.controller.processPRFromUrl(prUrl);
+
+            console.log("Processed PR from URL: ", prUrl, " with results: ", results);
 
             // Posting suggestions to PR as comments
             await this.postCommentToPR(prUrl, results);
